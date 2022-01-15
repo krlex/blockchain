@@ -5,14 +5,14 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
-Vagrant.configure("2") do |config|
+Vagrant.configure('2') do |config|
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "debian/buster64"
+  config.vm.box = 'debian/buster64'
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -32,10 +32,9 @@ Vagrant.configure("2") do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  config.vm.network "private_network", ip: "192.168.33.10"
-  config.vm.network "forwarded_port", guest: 80, host: 8080
-  config.vm.network "forwarded_port", guest: 5000, host: 5000 
-
+  config.vm.network 'private_network', ip: '192.168.33.10'
+  config.vm.network 'forwarded_port', guest: 80, host: 8080
+  config.vm.network 'forwarded_port', guest: 5000, host: 5000
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -66,18 +65,19 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  config.vm.provision "shell", inline: <<-SHELL
+  config.vm.provision 'shell', inline: <<-SHELL
     sudo apt install git python3-pip make neovim build-essential libssl-dev zlib1g-dev \
           libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
           libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl
     bash <(curl -sL https://raw.githubusercontent.com/krlex/docker-installation/master/script.sh)
-    pip3 install pipenv 
+    pip3 install pipenv#{' '}
     curl https://pyenv.run | bash
     export PATH="$HOME/.pyenv/bin:$PATH"
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
     exec "$SHELL"
+    pipenv install
     git clone htts://github.com/krlex/blockchain
     cd blockchain
-   SHELL
+  SHELL
 end
